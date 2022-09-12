@@ -1,5 +1,13 @@
 import React, { useState} from 'react'
-import { StyleSheet, Text, View, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  FlatList,
+  TouchableOpacity
+} from 'react-native';
+import CheckBox from 'expo-checkbox';
 import { AddTask, CustomModal  } from './components/index';
 const styles = StyleSheet.create({
   container: {
@@ -80,10 +88,19 @@ export default function App() {
   const [tasks, setTasks] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedTasks, setSelectedTasks] = useState([]);
 
   const onHandleChangeText = (text) => {
     console.warn('text', text);
     setTask(text);
+  }
+
+  const selectTask = (item) => {
+    if (selectedTasks.includes(item)) {
+      setSelectedTasks(selectedTasks.filter((selected) => selected.id !== item.id));
+    } else {
+      setSelectedTasks([...selectedTasks, item]);
+    }
   }
 
   const addItem = () => {
@@ -94,25 +111,26 @@ export default function App() {
     setTask('');
   }
 
-  const onHandleModal = (id) => {
+  const onHandleDeleteItem = (id) => {
+    setTasks(tasks.filter((item) => item.id !== id));
+    setSelectedTask(null);
     setModalVisible(!modalVisible);
-    setSelectedTask(tasks.find((item) => item.id === id))
+  }
+
+  const deleteSelectedTasks = () => {
+    setTasks(tasks.filter((item) => !selectedTasks.includes(item)));
+    setSelectedTasks([]);
   }
 
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
+      <CheckBox value={selectedTasks.includes(item)} onValueChange={() => selectTask(item)} />
       <Text style={styles.item}>{item.value}</Text>
       <TouchableOpacity style={styles.button} onPress={() => onHandleModal(item.id)}>
         <Text style={styles.delete}>X</Text>
       </TouchableOpacity>
     </View>
   )
-
-  const onHandleDeleteItem = (id) => {
-    setTasks(tasks.filter((item) => item.id !== id));
-    setSelectedTask(null);
-    setModalVisible(!modalVisible);
-  }
 
   return (
     <View style={styles.container}>
@@ -133,6 +151,7 @@ export default function App() {
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
       />
+      <Button color='red' title='Delete Selected' onPress={deleteSelectedTasks} />
       <CustomModal animationType='slide' visible={modalVisible}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Detalle de la lista</Text>
