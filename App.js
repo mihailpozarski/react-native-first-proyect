@@ -91,8 +91,13 @@ export default function App() {
   const [selectedTasks, setSelectedTasks] = useState([]);
 
   const onHandleChangeText = (text) => {
-    console.warn('text', text);
     setTask(text);
+  }
+
+  const onHandleModal = (id) => {
+    const task = tasks.find((task) => task.id === id);
+    setSelectedTask(task);
+    setModalVisible(true);
   }
 
   const selectTask = (item) => {
@@ -113,6 +118,12 @@ export default function App() {
 
   const onHandleDeleteItem = (id) => {
     setTasks(tasks.filter((item) => item.id !== id));
+    setSelectedTasks(selectedTasks.filter((item) => item.id !== id));
+    setSelectedTask(null);
+    setModalVisible(!modalVisible);
+  }
+
+  const onHandleCancel = () => {
     setSelectedTask(null);
     setModalVisible(!modalVisible);
   }
@@ -170,7 +181,7 @@ export default function App() {
           />
           <Button
             title='Cancelar'
-            onPress={() => setModalVisible(!modalVisible)}
+            onPress={() => onHandleCancel()}
             color='#cccccc'
           />
         </View>
