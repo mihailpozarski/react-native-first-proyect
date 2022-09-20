@@ -39,33 +39,6 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#ffffff'
   },
-  modalContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 30,
-    paddingVertical: 20,
-  },
-  modalTitle: {
-    fontSize: 16
-  },
-  modalMessageContainer : {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  modalMessage: {
-    fontSize: 14,
-  },
-  selectedTask: {
-    fontSize: 16,
-    color: '#000000',
-    fontWeight: 'bold',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginHorizontal: 20,
-  },
   button: {
     backgroundColor: '#4A306D',
     padding: 10,
