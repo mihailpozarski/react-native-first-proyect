@@ -5,10 +5,13 @@ import {
   View,
   Button,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import CheckBox from 'expo-checkbox';
+import { AddTask, DeleteScreen } from './components/index';
 import { useFonts } from 'expo-font';
+import { styles } from './styles';
 
 export default function App() {
   const [task, setTask] = useState('');
@@ -23,6 +26,14 @@ export default function App() {
     'Lato-Italic': require('./assets/fonts/Lato-Italic.ttf'),
     'Lato-Black': require('./assets/fonts/Lato-Black.ttf'),
   });
+
+  if (!loaded) {
+    return (
+      <View style={styles.loadingContainter}>
+        <ActivityIndicator size="large" color={colors.warning} />
+      </View>
+    );
+  }
 
   const onHandleChangeText = (text) => {
     setTask(text);
@@ -77,49 +88,36 @@ export default function App() {
     </View>
   )
 
-  return (
-    <View style={styles.container}>
-      <AddTask
-        item={task}
-        onChangeText={onHandleChangeText}
-        placeholder='new task'
-        addItem={addItem}
-        selectionColor='#4A306D'
-        placeholderTextColor='#4A306D'
-        textButton='ADD'
-        color='#4A306D'
+  if (!!selectedTask){
+    return (
+      <DeleteScreen
+      selectedTask={selectedTask}
+      onHandleCancel={onHandleCancel}
+      onHandleDeleteItem={onHandleDeleteItem}
       />
-      <FlatList
-        style={styles.itemList}
-        data={tasks}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        showsVerticalScrollIndicator={false}
-      />
-      <Button color='red' title='Delete Selected' onPress={deleteSelectedTasks} />
-      <CustomModal animationType='slide' visible={modalVisible}>
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Detalle de la lista</Text>
-        </View>
-        <View style={styles.modalMessageContainer}>
-          <Text style={styles.modalMessage}>¿Estas seguro de que quieres eliminar?</Text>
-        </View>
-        <View style={styles.modalMessageContainer}>
-          <Text style={styles.selectedTask}>{selectedTask?.value}</Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title='Eliminar'
-            onPress={() => onHandleDeleteItem(selectedTask?.id)}
-            color='#4A306D'
-          />
-          <Button
-            title='Cancelar'
-            onPress={() => onHandleCancel()}
-            color='#cccccc'
-          />
-        </View>
-      </CustomModal>
-    </View>
-  );
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <AddTask
+          item={task}
+          onChangeText={onHandleChangeText}
+          placeholder='new task'
+          addItem={addItem}
+          selectionColor='#4A306D'
+          placeholderTextColor='#4A306D'
+          textButton='ADD'
+          color='#4A306D'
+        />
+        <FlatList
+          style={styles.itemList}
+          data={tasks}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          showsVerticalScrollIndicator={false}
+        />
+        <Button color='red' title='Delete Selected' onPress={deleteSelectedTasks} />
+      </View>
+    );
+  }
 }
