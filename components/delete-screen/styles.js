@@ -1,14 +1,15 @@
 import { StyleSheet } from "react-native";
+import { colors } from '../../constants/colors';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.itemBackground,
   },
   delete: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#ffffff'
+    color: colors.background,
   },
   deleteContainer: {
     justifyContent: 'center',

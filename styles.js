@@ -1,9 +1,10 @@
 import { StyleSheet } from "react-native";
+import { colors } from './constants/colors';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.background,
   },
   itemList: {
     flex: 1,
@@ -17,7 +18,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
-    backgroundColor: '#9F84BD',
+    backgroundColor: colors.itemBackground,
     paddingHorizontal: 10,
     paddingVertical: 20,
     borderRadius: 5,
