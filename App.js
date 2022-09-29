@@ -8,8 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import CheckBox from 'expo-checkbox';
-import { AddTask, DeleteScreen } from './components/index';
+import { DeleteScreen, TasksScreen } from './components/index';
 import { useFonts } from 'expo-font';
 import { TasksContextProvider } from './context/TasksContext';
 import { NavigationContainer } from '@react-navigation/native';
@@ -96,6 +95,9 @@ export default function App() {
     return (
     <NavigationContainer>
       <TasksContextProvider>
+        <Stack.Navigator>
+          <Stack.Screen name="Tasks" component={TasksScreen} />
+        </Stack.Navigator>
       </TasksContextProvider>
     </NavigationContainer>
     );
