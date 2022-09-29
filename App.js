@@ -11,7 +11,11 @@ import {
 import CheckBox from 'expo-checkbox';
 import { AddTask, DeleteScreen } from './components/index';
 import { useFonts } from 'expo-font';
-import { styles } from './styles';
+import { TasksContextProvider } from './context/TasksContext';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [task, setTask] = useState('');
@@ -90,34 +94,10 @@ export default function App() {
 
   if (!!selectedTask){
     return (
-      <DeleteScreen
-      selectedTask={selectedTask}
-      onHandleCancel={onHandleCancel}
-      onHandleDeleteItem={onHandleDeleteItem}
-      />
-    );
-  } else {
-    return (
-      <View style={styles.container}>
-        <AddTask
-          item={task}
-          onChangeText={onHandleChangeText}
-          placeholder='new task'
-          addItem={addItem}
-          selectionColor='#4A306D'
-          placeholderTextColor='#4A306D'
-          textButton='ADD'
-          color='#4A306D'
-        />
-        <FlatList
-          style={styles.itemList}
-          data={tasks}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-          showsVerticalScrollIndicator={false}
-        />
-        <Button color='red' title='Delete Selected' onPress={deleteSelectedTasks} />
-      </View>
+    <NavigationContainer>
+      <TasksContextProvider>
+      </TasksContextProvider>
+    </NavigationContainer>
     );
   }
 }
