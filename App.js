@@ -97,6 +97,7 @@ export default function App() {
       <TasksContextProvider>
         <Stack.Navigator>
           <Stack.Screen name="Tasks" component={TasksScreen} />
+          <Stack.Screen name="Delete" component={DeleteScreen} />
         </Stack.Navigator>
       </TasksContextProvider>
     </NavigationContainer>
