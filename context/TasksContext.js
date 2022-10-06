@@ -33,6 +33,11 @@ export const TasksContextProvider = ({children}) => {
     setSelectedTasks([]);
   };
 
+  const deleteAll = () => {
+    setTasks([]);
+    setSelectedTasks([]);
+  };
+
   return (
     <TasksContext.Provider
       value={{
@@ -46,6 +51,7 @@ export const TasksContextProvider = ({children}) => {
         deleteTask,
         addTaskToSelectedTasks,
         deleteAllSelectedTasks,
+        deleteAll,
       }}>
       {children}
     </TasksContext.Provider>
