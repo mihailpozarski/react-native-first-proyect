@@ -5,13 +5,14 @@ import {
 } from 'react-native';
 import { styles } from './styles';
 import { colors } from './constants/colors';
-import { DeleteScreen, TasksScreen } from './components/index';
+import { DeleteAllScreen, TasksNavigation } from './components/index';
 import { useFonts } from 'expo-font';
 import { TasksContextProvider } from './context/TasksContext';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   const [loaded] = useFonts({
@@ -31,13 +32,39 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <TasksContextProvider>
-        <Stack.Navigator>
-          <Stack.Screen name="Tasks" component={TasksScreen} />
-          <Stack.Screen name="Delete" component={DeleteScreen} />
-        </Stack.Navigator>
-      </TasksContextProvider>
-    </NavigationContainer>
+    <TasksContextProvider>
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName="Tasks"
+          screenOptions={{
+            headerShown: false,
+            tabBarActiveTintColor: colors.primary,
+            tabBarActiveBackgroundColor: colors.secondary,
+            tabBarInactiveTintColor: colors.secondary,
+          }}>
+          <Tab.Screen
+            name="TasksNavigation"
+            component={TasksNavigation}
+            options={{
+              tabBarLabel: 'Tasks',
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="ios-list" color={color} size={size} />
+              ),
+            }}
+
+          />
+          <Tab.Screen
+            name="DeleteNavigation"
+            component={DeleteAllScreen}
+            options={{
+              tabBarLabel: 'Delete Tasks',
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="ios-trash" color={color} size={size} />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </TasksContextProvider>
   );
 }
