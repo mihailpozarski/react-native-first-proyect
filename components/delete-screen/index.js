@@ -1,12 +1,13 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styles } from './styles';
 import { View, Button, Text } from 'react-native';
-import { TasksContext } from '../../context/TasksContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteTask } from '../../store/actions';
 
 export const DeleteScreen = ({ navigation, route }) => {
   const { id } = route.params;
-  const { tasks, deleteTask } = useContext(TasksContext);
-
+  const dispatch = useDispatch();
+  const tasks = useSelector(state => state.tasksState.tasks);
   const [task, setTask] = useState(null);
 
   const onHandleCancel = () => {
@@ -14,7 +15,7 @@ export const DeleteScreen = ({ navigation, route }) => {
   }
 
   const onHandleDelete = (id) => {
-    deleteTask(id);
+    dispatch(deleteTask(id));
     navigation.navigate('Tasks');
   }
 

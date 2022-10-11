@@ -7,9 +7,10 @@ import { styles } from './styles';
 import { colors } from './constants/colors';
 import { DeleteAllScreen, TasksNavigation } from './components/index';
 import { useFonts } from 'expo-font';
-import { TasksContextProvider } from './context/TasksContext';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Provider } from 'react-redux';
+import store from './store';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
@@ -32,7 +33,7 @@ export default function App() {
   }
 
   return (
-    <TasksContextProvider>
+    <Provider store={store}>
       <NavigationContainer>
         <Tab.Navigator
           initialRouteName="Tasks"
@@ -65,6 +66,6 @@ export default function App() {
           />
         </Tab.Navigator>
       </NavigationContainer>
-    </TasksContextProvider>
+    </Provider>
   );
 }

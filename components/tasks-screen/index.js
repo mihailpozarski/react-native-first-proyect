@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
   Text,
   View,
@@ -6,24 +6,20 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import { TasksContext } from '../../context/TasksContext';
 import CheckBox from 'expo-checkbox';
 import AddTask from '../add-task/index';
 import { styles } from './styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteAllSelectedTasks, addTaskToSelectedTasks, addTask, setTask } from '../../store/actions';
 
 export default function TasksScreen({ navigation }) {
-  const {
-    task,
-    tasks,
-    addTask,
-    setTask,
-    selectedTasks,
-    addTaskToSelectedTasks,
-    deleteAllSelectedTasks
-  } = useContext(TasksContext);
+  const dispatch = useDispatch();
+  const tasks = useSelector(state => state.tasksState.tasks);
+  const selectedTasks = useSelector(state => state.tasksState.selectedTasks);
+  const task = useSelector(state => state.tasksState.task);
 
   const onHandleChangeText = (text) => {
-    setTask(text);
+    dispatch(setTask(text));
   }
 
   const onHandleDelete = (id) => {
@@ -32,7 +28,7 @@ export default function TasksScreen({ navigation }) {
 
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
-      <CheckBox value={selectedTasks.includes(item)} onValueChange={() => addTaskToSelectedTasks(item)} />
+      <CheckBox value={selectedTasks.includes(item)} onValueChange={() => dispatch(addTaskToSelectedTasks(item))} />
       <Text style={styles.item}>{item.value}</Text>
       <TouchableOpacity style={styles.button} onPress={() => onHandleDelete(item.id)}>
         <Text style={styles.delete}>X</Text>
@@ -46,7 +42,7 @@ export default function TasksScreen({ navigation }) {
         item={task}
         onChangeText={onHandleChangeText}
         placeholder='new task'
-        addItem={addTask}
+        addItem={() => dispatch(addTask())}
         selectionColor='#4A306D'
         placeholderTextColor='#4A306D'
         textButton='ADD'
@@ -59,7 +55,7 @@ export default function TasksScreen({ navigation }) {
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
       />
-      <Button color='red' title='Delete Selected' onPress={deleteAllSelectedTasks} />
+      <Button color='red' title='Delete Selected' onPress={() => dispatch(deleteAllSelectedTasks())} />
     </View>
   );
 }

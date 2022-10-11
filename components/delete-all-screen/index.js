@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { styles } from './styles';
 import { View, Button, Text } from 'react-native';
-import { TasksContext } from '../../context/TasksContext';
+import { useDispatch } from 'react-redux';
+import { deleteAll } from '../../store/actions';
 
 export const DeleteAllScreen = ({ navigation }) => {
-  const { deleteAll } = useContext(TasksContext);
+  const dispatch = useDispatch();
 
   const onHandleDeleteAll = () => {
-    deleteAll();
+    dispatch(deleteAll());
     navigation.navigate('Tasks');
   }
 
