@@ -50,5 +50,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 30,
     paddingVertical: 20,
-  }
+  },
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
 });

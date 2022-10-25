@@ -1,25 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, TextInput, Button } from "react-native";
+import ImageSelector from "../image-selector/index.js";
+import { useDispatch, useSelector } from 'react-redux';
+import { addTask, setTask, setImage } from '../../store/actions';
 import styles from "./styles.js";
 
-const AddTask = ({ item, onChangeText, placeholder, addItem, placeholderTextColor, textButton, color }) => {
+const AddTasks = ({navigation}) => {
+    const dispatch = useDispatch();
+    const task = useSelector(state => state.tasksState.task);
+    const image = useSelector(state => state.tasksState.image);
+
+    const onHandleChangeText = (text) => {
+        dispatch(setTask(text));
+    };
+
+    const onHandleImageSelected = (image) => {
+        dispatch(setImage(image));
+    };
+
+    const onHandleAddTask = () => {
+        if(task && image) {
+            dispatch(addTask());
+            navigation.navigate('Tasks');
+        }
+    };
+
     return (
         <View style={styles.inputContainer}>
             <TextInput
-                placeholder={placeholder}
+                placeholder="new task"
                 style={styles.input}
                 selectionColor='#4A306D'
-                placeholderTextColor={placeholderTextColor}
-                onChangeText={onChangeText}
-                value={item}
+                onChangeText={onHandleChangeText}
+                value={task}
             />
+            <ImageSelector onImage={onHandleImageSelected} />
             <Button
-                title={textButton}
-                color={color}
-                onPress={addItem}
+                style={styles.button}
+                title="Agregar"
+                color="#4A306D"
+                onPress={onHandleAddTask}
             />
         </View>
     );
 }
 
-export default AddTask;
+export default AddTasks;
