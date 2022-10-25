@@ -1,9 +1,14 @@
 import { tasksTypes } from "../types/tasks.types";
-const { SET_TASK, ADD_TASK, DELETE_TASK, ADD_TASK_TO_SELECTED_TASKS, DELETE_ALL_SELECTED_TASKS, DELETE_ALL } = tasksTypes;
+const { SET_TASK, SET_IMAGE, ADD_TASK, DELETE_TASK, ADD_TASK_TO_SELECTED_TASKS, DELETE_ALL_SELECTED_TASKS, DELETE_ALL } = tasksTypes;
 
 export const setTask = (task) => ({
   type: SET_TASK,
   task,
+});
+
+export const setImage = (image) => ({
+  type: SET_IMAGE,
+  image,
 });
 
 export const addTask = () => {

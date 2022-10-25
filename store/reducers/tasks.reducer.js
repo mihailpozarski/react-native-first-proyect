@@ -1,8 +1,9 @@
 import { tasksTypes } from "../types/tasks.types";
-const { SET_TASK, ADD_TASK, DELETE_TASK, ADD_TASK_TO_SELECTED_TASKS, DELETE_ALL_SELECTED_TASKS, DELETE_ALL } = tasksTypes;
+const { SET_TASK, SET_IMAGE, ADD_TASK, DELETE_TASK, ADD_TASK_TO_SELECTED_TASKS, DELETE_ALL_SELECTED_TASKS, DELETE_ALL } = tasksTypes;
 
 const initialState = {
   task: '',
+  image: null,
   tasks: [],
   selectedTasks: [],
 };
@@ -15,12 +16,19 @@ export const tasksReducer = (state = initialState, action) => {
         ...state,
         task: action.task,
       };
+    case SET_IMAGE:
+      console.log(action);
+      return {
+        ...state,
+        image: action.image,
+      };
     case ADD_TASK:
-      if(state.task.length > 0) {
+      if(state.task.length > 0 && state.image !== null) {
         return {
           ...state,
-          tasks: [...state.tasks, { id: Date.now(), value: state.task }],
+          tasks: [...state.tasks, { id: Date.now(), value: state.task, image: state.image }],
           task: '',
+          image: null,
         };
       }
       return state;
