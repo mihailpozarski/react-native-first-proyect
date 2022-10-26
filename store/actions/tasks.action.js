@@ -1,9 +1,14 @@
 import { tasksTypes } from "../types/tasks.types";
-const { SET_TASK, SET_IMAGE, ADD_TASK, DELETE_TASK, ADD_TASK_TO_SELECTED_TASKS, DELETE_ALL_SELECTED_TASKS, DELETE_ALL } = tasksTypes;
+const { SET_TASK, SET_TASKS, SET_IMAGE, ADD_TASK, DELETE_TASK, ADD_TASK_TO_SELECTED_TASKS, DELETE_ALL_SELECTED_TASKS, DELETE_ALL } = tasksTypes;
 
 export const setTask = (task) => ({
   type: SET_TASK,
   task,
+});
+
+export const setTasks = (tasks) => ({
+  type: SET_TASKS,
+  tasks,
 });
 
 export const setImage = (image) => ({
@@ -11,8 +16,7 @@ export const setImage = (image) => ({
   image,
 });
 
-export const addTask = () => {
-  console.log('addTask');
+export const addTask = (id, task, image) => {
   return ({
     type: ADD_TASK,
   })

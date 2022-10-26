@@ -1,5 +1,7 @@
 import { tasksTypes } from "../types/tasks.types";
-const { SET_TASK, SET_IMAGE, ADD_TASK, DELETE_TASK, ADD_TASK_TO_SELECTED_TASKS, DELETE_ALL_SELECTED_TASKS, DELETE_ALL } = tasksTypes;
+import { insertTask, getTasks, deleteAll, deleteTask, deleteTasks } from "../../db/index";
+import { addTask } from "../actions";
+const { SET_TASK, SET_TASKS, SET_IMAGE, ADD_TASK, DELETE_TASK, ADD_TASK_TO_SELECTED_TASKS, DELETE_ALL_SELECTED_TASKS, DELETE_ALL } = tasksTypes;
 
 const initialState = {
   task: '',
@@ -16,8 +18,12 @@ export const tasksReducer = (state = initialState, action) => {
         ...state,
         task: action.task,
       };
+    case SET_TASKS:
+      return {
+        ...state,
+        tasks: action.tasks,
+      };
     case SET_IMAGE:
-      console.log(action);
       return {
         ...state,
         image: action.image,
@@ -26,7 +32,7 @@ export const tasksReducer = (state = initialState, action) => {
       if(state.task.length > 0 && state.image !== null) {
         return {
           ...state,
-          tasks: [...state.tasks, { id: Date.now(), value: state.task, image: state.image }],
+          tasks: [...state.tasks, action.task],
           task: '',
           image: null,
         };
@@ -66,3 +72,74 @@ export const tasksReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export const loadTasks = () => {
+  return async (dispatch) => {
+    try {
+      let tasks = await getTasks();
+      console.log(tasks.rows._array);
+      tasks = tasks.rows._array
+      dispatch({
+        type: SET_TASKS,
+        tasks,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+};
+
+export const saveTask = (task, image) => {
+  return async (dispatch) => {
+    try {
+      const id = await insertTask(task, image);
+      task = {id: id.insertId, title: task, image: image}
+      dispatch({
+        type: ADD_TASK,
+        task,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+};
+
+export const removeTask = (id) => {
+  return async (dispatch) => {
+    try {
+      await deleteTask(id);
+      dispatch({
+        type: DELETE_TASK,
+        id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+export const removeAllTasks = () => {
+  return async (dispatch) => {
+    try {
+      await deleteAll();
+      dispatch({
+        type: DELETE_ALL,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+export const removeSelectedTasks = (selectedTasks) => {
+  return async (dispatch) => {
+    try {
+      await deleteTasks(selectedTasks);
+      dispatch({
+        type: DELETE_ALL_SELECTED_TASKS,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
