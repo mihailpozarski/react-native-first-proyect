@@ -12,8 +12,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider } from 'react-redux';
 import store from './store';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { init } from './db/index';
 
 const Tab = createBottomTabNavigator();
+init()
+  .then(() => {
+    console.log("Initialized database");
+  })
+  .catch((err) => {
+    console.log("Initializing db failed.", err);
+  });
 
 export default function App() {
   const [loaded] = useFonts({
