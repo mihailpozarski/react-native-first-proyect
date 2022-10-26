@@ -2,13 +2,13 @@ import React from 'react';
 import { styles } from './styles';
 import { View, Button, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { deleteAll } from '../../store/actions';
+import { removeAllTasks } from '../../store/reducers/tasks.reducer';
 
 export const DeleteAllScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const onHandleDeleteAll = () => {
-    dispatch(deleteAll());
+    dispatch(removeAllTasks());
     navigation.navigate('Tasks');
   }
 

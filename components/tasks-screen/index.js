@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Text,
   View,
@@ -10,7 +10,8 @@ import {
 import CheckBox from 'expo-checkbox';
 import { styles } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteAllSelectedTasks, addTaskToSelectedTasks } from '../../store/actions';
+import { addTaskToSelectedTasks } from '../../store/actions';
+import { loadTasks, removeSelectedTasks } from '../../store/reducers/tasks.reducer';
 
 export default function TasksScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -21,10 +22,14 @@ export default function TasksScreen({ navigation }) {
     navigation.navigate('Delete', { id });
   }
 
+  useEffect(() => {
+    dispatch(loadTasks())
+  }, [dispatch])
+
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
       <CheckBox value={selectedTasks.includes(item)} onValueChange={() => dispatch(addTaskToSelectedTasks(item))} />
-      <Text style={styles.item}>{item.value}</Text>
+      <Text style={styles.item}>{item.title}</Text>
       <Image source={{ uri: item.image }} style={styles.image} />
       <TouchableOpacity style={styles.button} onPress={() => onHandleDelete(item.id)}>
         <Text style={styles.delete}>X</Text>
@@ -42,7 +47,7 @@ export default function TasksScreen({ navigation }) {
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
       />
-      <Button color='red' title='Delete Selected' onPress={() => dispatch(deleteAllSelectedTasks())} />
+      <Button color='red' title='Delete Selected' onPress={() => dispatch(removeSelectedTasks(selectedTasks.map( (t)=> t.id )))} />
     </View>
   );
 }

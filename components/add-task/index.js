@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { View, TextInput, Button } from "react-native";
 import ImageSelector from "../image-selector/index.js";
 import { useDispatch, useSelector } from 'react-redux';
-import { addTask, setTask, setImage } from '../../store/actions';
+import { setTask, setImage } from '../../store/actions';
 import styles from "./styles.js";
+import { saveTask } from "../../store/reducers/tasks.reducer.js";
 
 const AddTasks = ({navigation}) => {
     const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const AddTasks = ({navigation}) => {
 
     const onHandleAddTask = () => {
         if(task && image) {
-            dispatch(addTask());
+            dispatch(saveTask(task, image));
             navigation.navigate('Tasks');
         }
     };

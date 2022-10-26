@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { styles } from './styles';
 import { View, Button, Text } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteTask } from '../../store/actions';
+import { removeTask } from '../../store/reducers/tasks.reducer';
 
 export const DeleteScreen = ({ navigation, route }) => {
   const { id } = route.params;
@@ -15,7 +15,7 @@ export const DeleteScreen = ({ navigation, route }) => {
   }
 
   const onHandleDelete = (id) => {
-    dispatch(deleteTask(id));
+    dispatch(removeTask(id));
     navigation.navigate('Tasks');
   }
 
